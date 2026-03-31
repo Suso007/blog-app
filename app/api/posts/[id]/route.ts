@@ -6,11 +6,12 @@ import { generateSlug } from '@/lib/utils'
 // GET - Fetch single post by ID
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const post = await prisma.post.findUnique({
-      where: { id: params.id },
+      where: { id },
     })
 
     if (!post) {
@@ -33,9 +34,10 @@ export async function GET(
 // PUT - Update a post
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authenticated = await isAuthenticated()
     if (!authenticated) {
       return NextResponse.json(
@@ -62,7 +64,7 @@ export async function PUT(
     }
 
     const post = await prisma.post.update({
-      where: { id: params.id },
+      where: { id },
       data: updateData,
     })
 
@@ -79,9 +81,10 @@ export async function PUT(
 // DELETE - Delete a post
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const authenticated = await isAuthenticated()
     if (!authenticated) {
       return NextResponse.json(
@@ -91,7 +94,7 @@ export async function DELETE(
     }
 
     await prisma.post.delete({
-      where: { id: params.id },
+      where: { id },
     })
 
     return NextResponse.json({ success: true })
