@@ -17,8 +17,11 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Modern Blog - Share Your Stories",
-  description: "A beautifully crafted blog platform for modern storytellers",
+  title: "Susovan's Blog - Musings of a Software Engineer",
+  description: "Musings of a Software Engineer",
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
