@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { Playfair_Display, DM_Sans } from "next/font/google";
+import { Playfair_Display, DM_Sans, Geist } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "next-themes";
+import { cn } from "@/lib/utils";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -10,11 +11,7 @@ const playfair = Playfair_Display({
   display: 'swap',
 });
 
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  variable: '--font-sans',
-  display: 'swap',
-});
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   title: "Susovan's Blog - Musings of a Software Engineer",
@@ -30,8 +27,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${playfair.variable} ${dmSans.variable} font-sans antialiased`}>
+    <html lang="en" className={cn("font-sans", geist.variable)}>
+      <body className={`${playfair.variable} ${geist.variable} font-sans antialiased`}>
 
         <ThemeProvider
           attribute="class"

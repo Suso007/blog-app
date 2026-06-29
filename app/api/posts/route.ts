@@ -9,15 +9,19 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const category = searchParams.get('category')
     const sortBy = searchParams.get('sortBy') || 'desc'
+    const showAll = searchParams.get('all') === 'true'
 
-    const where = category && category !== 'All' ? { category } : {}
+    const where: Record<string, unknown> =
+      category && category !== 'All' ? { category } : {}
+
+    // Only filter by published:true for public requests
+    if (!showAll) {
+      where.published = true
+    }
 
     console.log(where)
     const posts = await prisma.post.findMany({
-      where: {
-        ...where,
-        published: true,
-      },
+      where,
       orderBy: {
         createdAt: sortBy === 'asc' ? 'asc' : 'desc',
       },
@@ -33,6 +37,7 @@ export async function GET(request: NextRequest) {
     )
   }
 }
+
 
 // POST - Create a new post
 export async function POST(request: NextRequest) {
